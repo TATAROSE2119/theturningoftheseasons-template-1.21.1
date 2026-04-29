@@ -1,13 +1,60 @@
 {
-  "itemGroup.theturningoftheseasons": "Example Mod Tab",
-  "block.theturningoftheseasons.example_block": "Example Block",
-  "item.theturningoftheseasons.example_item": "Example Item",
+  "_comment": "English (US) translations for The Turning of the Seasons.",
 
-  "theturningoftheseasons.configuration.title": "The Turning of the Seasons Configs",
-  "theturningoftheseasons.configuration.section.theturningoftheseasons.common.toml": "The Turning of the Seasons Configs",
-  "theturningoftheseasons.configuration.section.theturningoftheseasons.common.toml.title": "The Turning of the Seasons Configs",
-  "theturningoftheseasons.configuration.items": "Item List",
-  "theturningoftheseasons.configuration.logDirtBlock": "Log Dirt Block",
-  "theturningoftheseasons.configuration.magicNumberIntroduction": "Magic Number Text",
-  "theturningoftheseasons.configuration.magicNumber": "Magic Number"
+  "season.theturningoftheseasons.spring": "Spring",
+  "season.theturningoftheseasons.summer": "Summer",
+  "season.theturningoftheseasons.autumn": "Autumn",
+  "season.theturningoftheseasons.winter": "Winter",
+
+  "climate.theturningoftheseasons.temperate": "Temperate",
+  "climate.theturningoftheseasons.cold": "Cold",
+  "climate.theturningoftheseasons.arid": "Arid",
+  "climate.theturningoftheseasons.tropical": "Tropical",
+  "climate.theturningoftheseasons.alpine": "Alpine",
+  "climate.theturningoftheseasons.oceanic": "Oceanic",
+
+  "hud.theturningoftheseasons.line1": "%s — Year %d",
+  "hud.theturningoftheseasons.line2": "Day %d / %d",
+
+  "notification.theturningoftheseasons.season_advance": "%s has arrived",
+  "notification.theturningoftheseasons.year_advance": "A new year begins — Year %d",
+
+  "subtitle.theturningoftheseasons.music.season.spring": "Spring melody",
+  "subtitle.theturningoftheseasons.music.season.summer": "Summer melody",
+  "subtitle.theturningoftheseasons.music.season.autumn": "Autumn melody",
+  "subtitle.theturningoftheseasons.music.season.winter": "Winter melody",
+
+  "commands.theturningoftheseasons.season.query": "Current: %s, year %d, day %d/%d.",
+  "commands.theturningoftheseasons.season.set": "Season set to %s.",
+  "commands.theturningoftheseasons.season.advance": "Advanced %d day(s) → %s, year %d, day %d/%d.",
+  "commands.theturningoftheseasons.season.climate": "Biome: %s — Climate zone: %s.",
+  "commands.theturningoftheseasons.season.dim_disabled": "This dimension does not have seasons enabled.",
+  "commands.theturningoftheseasons.season.unknown": "Unknown season name.",
+  "commands.theturningoftheseasons.season.no_entity": "This command requires an entity source (run as a player).",
+
+  "theturningoftheseasons.configuration.title": "The Turning of the Seasons — Configuration",
+
+  "theturningoftheseasons.configuration.section.theturningoftheseasons.common.toml": "Common Configuration",
+  "theturningoftheseasons.configuration.section.theturningoftheseasons.common.toml.title": "Common Configuration",
+  "theturningoftheseasons.configuration.section.theturningoftheseasons.server.toml": "Server (World) Configuration",
+  "theturningoftheseasons.configuration.section.theturningoftheseasons.server.toml.title": "Server (World) Configuration",
+  "theturningoftheseasons.configuration.section.theturningoftheseasons.client.toml": "Client Configuration",
+  "theturningoftheseasons.configuration.section.theturningoftheseasons.client.toml.title": "Client Configuration",
+
+  "theturningoftheseasons.configuration.calendarMode": "Calendar Mode",
+  "theturningoftheseasons.configuration.customDaysPerSeason": "Custom Days per Season",
+  "theturningoftheseasons.configuration.initialSeason": "Initial Season",
+  "theturningoftheseasons.configuration.enableOverworld": "Enable in Overworld",
+  "theturningoftheseasons.configuration.enableNether": "Enable in Nether",
+  "theturningoftheseasons.configuration.enableEnd": "Enable in End",
+
+  "theturningoftheseasons.configuration.enableDebugLogging": "Enable Debug Logging",
+
+  "theturningoftheseasons.configuration.showDebugHud": "Show Debug HUD",
+  "theturningoftheseasons.configuration.hudAnchor": "HUD Anchor",
+  "theturningoftheseasons.configuration.hudOffsetX": "HUD Offset X",
+  "theturningoftheseasons.configuration.hudOffsetY": "HUD Offset Y",
+
+  "theturningoftheseasons.configuration.showSeasonTitle": "Show Season Change Title",
+  "theturningoftheseasons.configuration.playSeasonSound": "Play Season Change Sound"
 }

@@ -1,0 +1,48 @@
+{
+  "music.season.spring": {
+    "category": "music",
+    "subtitle": "subtitle.theturningoftheseasons.music.season.spring",
+    "sounds": [
+      { "name": "theturningoftheseasons:season/spring/rongxue_weichen",     "stream": true },
+      { "name": "theturningoftheseasons:season/spring/rongxue_weichen_alt", "stream": true },
+      { "name": "theturningoftheseasons:season/spring/rongxue_chenlu",      "stream": true },
+      { "name": "theturningoftheseasons:season/spring/rongxue_chenlu_2",    "stream": true },
+      { "name": "theturningoftheseasons:season/spring/spring_plains_dawn",     "stream": true },
+      { "name": "theturningoftheseasons:season/spring/spring_plains_dawn_alt", "stream": true }
+    ]
+  },
+
+  "music.season.summer": {
+    "category": "music",
+    "subtitle": "subtitle.theturningoftheseasons.music.season.summer",
+    "sounds": [
+      { "name": "theturningoftheseasons:season/summer/mossfield_dawn",            "stream": true },
+      { "name": "theturningoftheseasons:season/summer/shengxia_caofeng",          "stream": true },
+      { "name": "theturningoftheseasons:season/summer/shengxia_caofeng_alt",      "stream": true },
+      { "name": "theturningoftheseasons:season/summer/shengxia_caoyuan",          "stream": true },
+      { "name": "theturningoftheseasons:season/summer/shengxia_caoyuan_2",        "stream": true },
+      { "name": "theturningoftheseasons:season/summer/xiari_fangkuai_jishi",      "stream": true },
+      { "name": "theturningoftheseasons:season/summer/xiari_fangkuai_jishi_alt",  "stream": true }
+    ]
+  },
+
+  "music.season.autumn": {
+    "category": "music",
+    "subtitle": "subtitle.theturningoftheseasons.music.season.autumn",
+    "sounds": [
+      { "name": "theturningoftheseasons:season/autumn/autumn_shift",     "stream": true },
+      { "name": "theturningoftheseasons:season/autumn/linjing_wanqiu",   "stream": true },
+      { "name": "theturningoftheseasons:season/autumn/linjing_wanqiu_2", "stream": true }
+    ]
+  },
+
+  "music.season.winter": {
+    "category": "music",
+    "subtitle": "subtitle.theturningoftheseasons.music.season.winter",
+    "sounds": [
+      { "name": "theturningoftheseasons:season/winter/xueye_kongyuan",       "stream": true },
+      { "name": "theturningoftheseasons:season/winter/xueye_kongyuan_alt",   "stream": true },
+      { "name": "theturningoftheseasons:season/winter/xueye_kongyuan_alt_2", "stream": true }
+    ]
+  }
+}

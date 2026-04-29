@@ -1,0 +1,59 @@
+{
+  "season.theturningoftheseasons.spring": "春季",
+  "season.theturningoftheseasons.summer": "夏季",
+  "season.theturningoftheseasons.autumn": "秋季",
+  "season.theturningoftheseasons.winter": "冬季",
+
+  "climate.theturningoftheseasons.temperate": "温带",
+  "climate.theturningoftheseasons.cold": "寒带",
+  "climate.theturningoftheseasons.arid": "干旱带",
+  "climate.theturningoftheseasons.tropical": "热带",
+  "climate.theturningoftheseasons.alpine": "高山带",
+  "climate.theturningoftheseasons.oceanic": "海洋带",
+
+  "hud.theturningoftheseasons.line1": "%s · 第 %d 年",
+  "hud.theturningoftheseasons.line2": "第 %d / %d 天",
+
+  "notification.theturningoftheseasons.season_advance": "%s 已至",
+  "notification.theturningoftheseasons.year_advance": "新的一年 —— 第 %d 年",
+
+  "subtitle.theturningoftheseasons.music.season.spring": "春之乐章",
+  "subtitle.theturningoftheseasons.music.season.summer": "夏之乐章",
+  "subtitle.theturningoftheseasons.music.season.autumn": "秋之乐章",
+  "subtitle.theturningoftheseasons.music.season.winter": "冬之乐章",
+
+  "commands.theturningoftheseasons.season.query": "当前：%s，第 %d 年，第 %d/%d 天。",
+  "commands.theturningoftheseasons.season.set": "已切换到 %s。",
+  "commands.theturningoftheseasons.season.advance": "推进了 %d 天 → %s，第 %d 年，第 %d/%d 天。",
+  "commands.theturningoftheseasons.season.climate": "群系：%s —— 气候带：%s。",
+  "commands.theturningoftheseasons.season.dim_disabled": "当前维度未启用季节系统。",
+  "commands.theturningoftheseasons.season.unknown": "未知的季节名。",
+  "commands.theturningoftheseasons.season.no_entity": "该命令需要由实体（玩家）执行。",
+
+  "theturningoftheseasons.configuration.title": "The Turning of the Seasons 配置",
+
+  "theturningoftheseasons.configuration.section.theturningoftheseasons.common.toml": "通用配置",
+  "theturningoftheseasons.configuration.section.theturningoftheseasons.common.toml.title": "通用配置",
+  "theturningoftheseasons.configuration.section.theturningoftheseasons.server.toml": "服务端（世界）配置",
+  "theturningoftheseasons.configuration.section.theturningoftheseasons.server.toml.title": "服务端（世界）配置",
+  "theturningoftheseasons.configuration.section.theturningoftheseasons.client.toml": "客户端配置",
+  "theturningoftheseasons.configuration.section.theturningoftheseasons.client.toml.title": "客户端配置",
+
+  "theturningoftheseasons.configuration.calendarMode": "季节日历模式",
+  "theturningoftheseasons.configuration.customDaysPerSeason": "自定义每季天数",
+  "theturningoftheseasons.configuration.initialSeason": "初始季节",
+  "theturningoftheseasons.configuration.enableOverworld": "主世界启用季节",
+  "theturningoftheseasons.configuration.enableNether": "下界启用季节",
+  "theturningoftheseasons.configuration.enableEnd": "末地启用季节",
+
+  "theturningoftheseasons.configuration.enableDebugLogging": "启用调试日志",
+
+  "theturningoftheseasons.configuration.showDebugHud": "显示调试 HUD",
+  "theturningoftheseasons.configuration.hudAnchor": "HUD 位置",
+  "theturningoftheseasons.configuration.hudOffsetX": "HUD 横向偏移",
+  "theturningoftheseasons.configuration.hudOffsetY": "HUD 纵向偏移",
+
+  "theturningoftheseasons.configuration.showSeasonTitle": "显示季节切换标题",
+  "theturningoftheseasons.configuration.playSeasonSound": "播放季节切换音效",
+  "_comment": "English (US) translations for The Turning of the Seasons."
+}
