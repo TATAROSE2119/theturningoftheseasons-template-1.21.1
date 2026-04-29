@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8.5",
+  "package": "com.tatarose.turningseasons.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "refmap": "theturningoftheseasons.refmap.json",
+  "client": [
+    "client.BiomeColorsMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

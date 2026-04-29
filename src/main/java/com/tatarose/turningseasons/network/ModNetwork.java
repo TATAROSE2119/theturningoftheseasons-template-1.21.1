@@ -45,7 +45,14 @@ public final class ModNetwork {
                 (payload, ctx) -> {
                     // ctx 已经把回调调度到了客户端主线程，这里直接更新缓存
                     if (ctx.flow().isClientbound()) {
+                        boolean firstSync = !ClientSeasonState.isAvailable();
                         ClientSeasonState.update(payload.state());
+                        // 第一次拿到季节快照时，invalidate 已渲染的 chunk，
+                        // 让 BiomeColors mixin 把当前季节 tint 吃进去。
+                        // 后续每天的同步包不需要 invalidate（季节没变）。
+                        if (firstSync) {
+                            SeasonChangeNotifier.onSync();
+                        }
                     }
                 }
         );

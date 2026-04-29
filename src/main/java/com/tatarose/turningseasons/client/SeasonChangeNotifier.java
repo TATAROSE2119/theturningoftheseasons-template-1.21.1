@@ -82,6 +82,30 @@ public final class SeasonChangeNotifier {
         if (ClientConfig.PLAY_SEASON_SOUND.get()) {
             playSeasonMusic(mc, next);
         }
+
+        // 3) 让所有已加载区块重新生成 mesh，把新季节的 tint 立刻吃进去
+        //    （BiomeColors 走的是 chunk-level 缓存，不主动 invalidate 的话玩家要走出
+        //     视野范围再回来才能看到颜色变化。）
+        if (mc.levelRenderer != null) {
+            mc.levelRenderer.allChanged();
+        }
+    }
+
+    /**
+     * 服务端 SeasonSyncPayload 到达后调用（PayloadRegistrar 已经把回调调度到主线程）。
+     *
+     * <p>初次连入或重新登录时，客户端可能已经渲染了一些 chunk，但那时 ClientSeasonState
+     * 还是 null，BiomeColors 走的是 vanilla 算色。等到 sync 包到达后，已渲染的 chunk
+     * 仍然挂着旧的 mesh，所以这里需要主动 invalidate。</p>
+     *
+     * <p>代价：会 trigger 一次完整的 chunk re-mesh，玩家会看到几帧的"加载"。
+     * 但只在登录瞬间发生一次，可接受。</p>
+     */
+    public static void onSync() {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.levelRenderer != null) {
+            mc.levelRenderer.allChanged();
+        }
     }
 
     /**
