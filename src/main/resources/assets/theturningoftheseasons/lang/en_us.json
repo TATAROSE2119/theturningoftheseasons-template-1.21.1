@@ -1,0 +1,13 @@
+{
+  "itemGroup.theturningoftheseasons": "Example Mod Tab",
+  "block.theturningoftheseasons.example_block": "Example Block",
+  "item.theturningoftheseasons.example_item": "Example Item",
+
+  "theturningoftheseasons.configuration.title": "The Turning of the Seasons Configs",
+  "theturningoftheseasons.configuration.section.theturningoftheseasons.common.toml": "The Turning of the Seasons Configs",
+  "theturningoftheseasons.configuration.section.theturningoftheseasons.common.toml.title": "The Turning of the Seasons Configs",
+  "theturningoftheseasons.configuration.items": "Item List",
+  "theturningoftheseasons.configuration.logDirtBlock": "Log Dirt Block",
+  "theturningoftheseasons.configuration.magicNumberIntroduction": "Magic Number Text",
+  "theturningoftheseasons.configuration.magicNumber": "Magic Number"
+}
