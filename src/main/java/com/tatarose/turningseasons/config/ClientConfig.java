@@ -32,6 +32,13 @@ public final class ClientConfig {
     public static final ModConfigSpec.BooleanValue SHOW_SEASON_TITLE;
     public static final ModConfigSpec.BooleanValue PLAY_SEASON_SOUND;
 
+    // ===== 季节粒子 =====
+    public static final ModConfigSpec.BooleanValue SHOW_SEASON_PARTICLES;
+    public static final ModConfigSpec.IntValue PARTICLE_DENSITY;
+
+    // ===== 季节雾 =====
+    public static final ModConfigSpec.BooleanValue SHOW_SEASON_FOG;
+
     static {
         BUILDER.comment("Client-only visual settings. Do not affect game rules.")
                 .push("hud");
@@ -65,6 +72,30 @@ public final class ClientConfig {
         PLAY_SEASON_SOUND = BUILDER
                 .comment("Play a brief sound effect when the season changes.")
                 .define("playSeasonSound", true);
+
+        BUILDER.pop();
+
+        // 季节环境粒子（落叶、雪花、花瓣等）
+        BUILDER.comment("Ambient particle effects spawned around the player based on the current season.")
+                .push("particles");
+
+        SHOW_SEASON_PARTICLES = BUILDER
+                .comment("Spawn ambient particles (autumn leaves, winter snow, spring petals) around the player.")
+                .define("showSeasonParticles", true);
+
+        PARTICLE_DENSITY = BUILDER
+                .comment("Particle spawn rate (1 = sparse, 5 = lush). Higher values cost more CPU on the client.")
+                .defineInRange("particleDensity", 3, 1, 5);
+
+        BUILDER.pop();
+
+        // 季节雾（仅秋晨 / 冬季 / 海洋带触发）
+        BUILDER.comment("Season-driven fog overlay. Triggers only on autumn mornings, winter, and oceanic biomes.")
+                .push("fog");
+
+        SHOW_SEASON_FOG = BUILDER
+                .comment("Tint and tighten the vanilla fog based on the current season and climate zone.")
+                .define("showSeasonFog", true);
 
         BUILDER.pop();
     }

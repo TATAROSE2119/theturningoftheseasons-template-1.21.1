@@ -16,7 +16,6 @@
   "hud.theturningoftheseasons.line1": "%s — Year %d",
   "hud.theturningoftheseasons.line2": "Day %d / %d",
 
-  "notification.theturningoftheseasons.season_advance": "%s has arrived",
   "notification.theturningoftheseasons.year_advance": "A new year begins — Year %d",
 
   "subtitle.theturningoftheseasons.music.season.spring": "Spring melody",
@@ -56,5 +55,10 @@
   "theturningoftheseasons.configuration.hudOffsetY": "HUD Offset Y",
 
   "theturningoftheseasons.configuration.showSeasonTitle": "Show Season Change Title",
-  "theturningoftheseasons.configuration.playSeasonSound": "Play Season Change Sound"
+  "theturningoftheseasons.configuration.playSeasonSound": "Play Season Change Sound",
+
+  "theturningoftheseasons.configuration.showSeasonParticles": "Show Seasonal Particles",
+  "theturningoftheseasons.configuration.particleDensity": "Particle Density",
+
+  "theturningoftheseasons.configuration.showSeasonFog": "Show Seasonal Fog"
 }

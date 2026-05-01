@@ -65,17 +65,15 @@ public final class SeasonChangeNotifier {
             Component title = Component.translatable(next.getTranslationKey())
                     .withStyle(seasonColor(next));
 
-            Component subtitle;
-            if (previous == Season.WINTER && next == Season.SPRING) {
-                subtitle = Component.translatable(
-                        "notification.theturningoftheseasons.year_advance", year);
-            } else {
-                subtitle = Component.translatable(
-                        "notification.theturningoftheseasons.season_advance");
-            }
-
             mc.gui.setTitle(title);
-            mc.gui.setSubtitle(subtitle);
+            // 仅冬 → 春跨年时显示副标题"新的一年 —— 第 N 年"；
+            // 普通季节切换不显示副标题（主标题已带季节名 + 颜色，足够明确）。
+            if (previous == Season.WINTER && next == Season.SPRING) {
+                mc.gui.setSubtitle(Component.translatable(
+                        "notification.theturningoftheseasons.year_advance", year));
+            } else {
+                mc.gui.setSubtitle(Component.empty());
+            }
         }
 
         // 2) 季节 BGM
