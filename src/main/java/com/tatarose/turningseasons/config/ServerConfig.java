@@ -31,6 +31,9 @@ public final class ServerConfig {
     public static final ModConfigSpec.BooleanValue ENABLE_NETHER;
     public static final ModConfigSpec.BooleanValue ENABLE_END;
 
+    public static final ModConfigSpec.BooleanValue ENABLE_CROP_RESTRICTIONS;
+    public static final ModConfigSpec.DoubleValue GLOBAL_GROWTH_MULTIPLIER;
+
     static {
         // === 季节核心规则 ===
         BUILDER.comment("Core season rules. Server-authoritative; clients only receive sync results.")
@@ -63,6 +66,33 @@ public final class ServerConfig {
         ENABLE_OVERWORLD = BUILDER.define("enableOverworld", true);
         ENABLE_NETHER = BUILDER.define("enableNether", false);
         ENABLE_END = BUILDER.define("enableEnd", false);
+
+        BUILDER.pop();
+
+        // === 作物生长限制 ===
+        BUILDER.comment(
+                "Seasonal crop restrictions.",
+                "Controls which crops can grow in which seasons based on climate zone tags.",
+                "Greenhouse detection (glass ceiling / artificial light / underground) bypasses all restrictions."
+        )
+                .push("crops");
+
+        ENABLE_CROP_RESTRICTIONS = BUILDER
+                .comment(
+                        "Master toggle for seasonal crop restrictions.",
+                        "When false, all crops grow normally regardless of season (vanilla behavior).",
+                        "When true, crops only grow when their block is tagged as in-season for the current climate zone."
+                )
+                .define("enableCropRestrictions", true);
+
+        GLOBAL_GROWTH_MULTIPLIER = BUILDER
+                .comment(
+                        "Global growth speed multiplier for in-season crops.",
+                        "1.0 = vanilla speed. 2.0 = 2x faster (forces growth each random tick).",
+                        "0.5 = half speed. 0.0 = stop growing entirely (even for in-season tags).",
+                        "Range: [0.0, 10.0]."
+                )
+                .defineInRange("globalGrowthMultiplier", 1.0, 0.0, 10.0);
 
         BUILDER.pop();
     }

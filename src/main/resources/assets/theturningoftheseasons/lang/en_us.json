@@ -60,5 +60,13 @@
   "theturningoftheseasons.configuration.showSeasonParticles": "Show Seasonal Particles",
   "theturningoftheseasons.configuration.particleDensity": "Particle Density",
 
-  "theturningoftheseasons.configuration.showSeasonFog": "Show Seasonal Fog"
+  "theturningoftheseasons.configuration.showSeasonFog": "Show Seasonal Fog",
+
+  "theturningoftheseasons.configuration.enableCropRestrictions": "Enable Crop Restrictions",
+  "theturningoftheseasons.configuration.showCropIndicator": "Show Crop Indicator",
+
+  "key.categories.theturningoftheseasons": "The Turning of the Seasons",
+  "key.theturningoftheseasons.toggle_crop_indicator": "Toggle Crop Indicator",
+  "indicator.theturningoftheseasons.shown": "Crop indicator: shown",
+  "indicator.theturningoftheseasons.hidden": "Crop indicator: hidden"
 }

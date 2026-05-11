@@ -39,6 +39,9 @@ public final class ClientConfig {
     // ===== 季节雾 =====
     public static final ModConfigSpec.BooleanValue SHOW_SEASON_FOG;
 
+    // ===== 作物指示器 =====
+    public static final ModConfigSpec.BooleanValue SHOW_CROP_INDICATOR;
+
     static {
         BUILDER.comment("Client-only visual settings. Do not affect game rules.")
                 .push("hud");
@@ -96,6 +99,16 @@ public final class ClientConfig {
         SHOW_SEASON_FOG = BUILDER
                 .comment("Tint and tighten the vanilla fog based on the current season and climate zone.")
                 .define("showSeasonFog", true);
+
+        BUILDER.pop();
+
+        // 作物指示器 —— 准星对准作物时在上方显示生长信息
+        BUILDER.comment("Crop growth indicator shown above crop blocks when looked at.")
+                .push("cropIndicator");
+
+        SHOW_CROP_INDICATOR = BUILDER
+                .comment("Show crop growth info (progress bar, season, climate zone) when looking at a crop.")
+                .define("showCropIndicator", true);
 
         BUILDER.pop();
     }

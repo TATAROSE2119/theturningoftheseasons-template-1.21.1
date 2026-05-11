@@ -60,5 +60,15 @@
 
   "theturningoftheseasons.configuration.showSeasonFog": "显示季节迷雾",
 
+  "theturningoftheseasons.configuration.enableCropRestrictions": "启用季节作物限制",
+  "theturningoftheseasons.configuration.globalGrowthMultiplier": "全局生长倍率",
+
+  "theturningoftheseasons.configuration.showCropIndicator": "显示作物指示器",
+
+  "key.categories.theturningoftheseasons": "四季更替",
+  "key.theturningoftheseasons.toggle_crop_indicator": "切换作物指示器",
+  "indicator.theturningoftheseasons.shown": "作物指示器：显示",
+  "indicator.theturningoftheseasons.hidden": "作物指示器：隐藏",
+
   "_comment": "English (US) translations for The Turning of the Seasons."
 }
