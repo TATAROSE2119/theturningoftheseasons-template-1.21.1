@@ -14,10 +14,13 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.block.BambooStalkBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.StemBlock;
+import net.minecraft.world.level.block.SugarCaneBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 
@@ -85,6 +88,12 @@ public final class CropIndicatorOverlay implements LayeredDraw.Layer {
         } else if (block instanceof StemBlock) {
             age = state.getValue(StemBlock.AGE);
             maxAge = StemBlock.MAX_AGE;
+        } else if (block instanceof SugarCaneBlock) {
+            age = state.getValue(BlockStateProperties.AGE_15);
+            maxAge = 15;
+        } else if (block instanceof BambooStalkBlock) {
+            age = 0;
+            maxAge = 0; // 竹子不显示百分比
         } else {
             return;
         }
@@ -95,7 +104,9 @@ public final class CropIndicatorOverlay implements LayeredDraw.Layer {
                 && CropSeasonResolver.isInSeason(block, seasonState.season(), zone);
 
         String cropName = block.getName().getString();
-        int percent = maxAge > 0 ? age * 100 / maxAge : 0;
+        // 竹子不显示百分比
+        String percentText = maxAge > 0
+                ? (" \u00b7 " + (age * 100 / maxAge) + "%") : "";
 
         // 生长倍率：当季 = 配置值，非当季 = 0
         double speed = inSeason && seasonState != null
@@ -109,8 +120,7 @@ public final class CropIndicatorOverlay implements LayeredDraw.Layer {
 
         Font font = mc.font;
         String speedStr = speed == 1.0 ? "x1" : String.format("x%.1f", speed);
-        Component line1 = Component.literal(
-                cropName + " \u00b7 " + percent + "% \u00b7 " + speedStr);
+        Component line1 = Component.literal(cropName + percentText + " \u00b7 " + speedStr);
         Component line2 = Component.literal(seasonName + " \u00b7 " + zoneName);
         String line2Suffix = " \u00b7 " + status;
 

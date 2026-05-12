@@ -7,6 +7,10 @@
   "client": [
     "client.BiomeColorsMixin"
   ],
+  "mixins": [
+    "SugarCaneBlockMixin",
+    "BambooStalkBlockMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }
