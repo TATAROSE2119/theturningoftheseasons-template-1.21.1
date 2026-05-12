@@ -65,6 +65,9 @@
 
   "theturningoftheseasons.configuration.showCropIndicator": "显示作物指示器",
 
+  "indicator.theturningoftheseasons.line1": "%s · %d%%",
+  "indicator.theturningoftheseasons.line2": "%s · %s",
+
   "key.categories.theturningoftheseasons": "四季更替",
   "key.theturningoftheseasons.toggle_crop_indicator": "切换作物指示器",
   "indicator.theturningoftheseasons.shown": "作物指示器：显示",

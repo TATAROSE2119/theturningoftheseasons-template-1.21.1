@@ -65,6 +65,9 @@
   "theturningoftheseasons.configuration.enableCropRestrictions": "Enable Crop Restrictions",
   "theturningoftheseasons.configuration.showCropIndicator": "Show Crop Indicator",
 
+  "indicator.theturningoftheseasons.line1": "%s \u00b7 %d%%",
+  "indicator.theturningoftheseasons.line2": "%s \u00b7 %s",
+
   "key.categories.theturningoftheseasons": "The Turning of the Seasons",
   "key.theturningoftheseasons.toggle_crop_indicator": "Toggle Crop Indicator",
   "indicator.theturningoftheseasons.shown": "Crop indicator: shown",

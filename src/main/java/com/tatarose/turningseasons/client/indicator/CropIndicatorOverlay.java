@@ -1,19 +1,17 @@
 package com.tatarose.turningseasons.client.indicator;
 
-import com.mojang.blaze3d.vertex.ByteBufferBuilder;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.tatarose.turningseasons.TheTurningoftheSeasons;
 import com.tatarose.turningseasons.client.ClientSeasonState;
 import com.tatarose.turningseasons.common.season.ClimateZone;
 import com.tatarose.turningseasons.common.season.ClimateZoneResolver;
 import com.tatarose.turningseasons.common.season.SeasonState;
 import com.tatarose.turningseasons.config.ClientConfig;
 import com.tatarose.turningseasons.server.crop.CropSeasonResolver;
-import net.minecraft.client.Camera;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Block;
@@ -22,20 +20,18 @@ import net.minecraft.world.level.block.StemBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
-import org.joml.Matrix4f;
 
 /**
- * 作物生长指示器 —— 世界空间 Billboard 渲染，使用 ByteBufferBuilder (1.21.1 API)。
+ * 作物生长指示器 —— 屏幕空间 HUD 层。
+ *
+ * <p>与 {@code SeasonHudOverlay} 完全相同的渲染管道（{@link LayeredDraw.Layer}），
+ * 100% 可靠，不依赖世界空间渲染。</p>
+ *
+ * <p>准星对准作物时，在屏幕顶部居中显示作物信息。</p>
  */
-@EventBusSubscriber(modid = TheTurningoftheSeasons.MODID, value = Dist.CLIENT)
-public final class CropIndicatorOverlay {
-    private CropIndicatorOverlay() {}
+public final class CropIndicatorOverlay implements LayeredDraw.Layer {
+
+    public static final CropIndicatorOverlay INSTANCE = new CropIndicatorOverlay();
 
     public static final KeyMapping TOGGLE_KEY = new KeyMapping(
             "key.theturningoftheseasons.toggle_crop_indicator",
@@ -44,19 +40,38 @@ public final class CropIndicatorOverlay {
             "key.categories.theturningoftheseasons"
     );
 
-    private static boolean visible = true;
+    static boolean visible = true;
 
-    @SubscribeEvent
-    public static void onRenderLevelStage(RenderLevelStageEvent event) {
-        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_LEVEL) return;
+    private static final int BG_COLOR = 0xAA000000;
+    private static final int PADDING = 4;
+    private static final int LINE_HEIGHT = 10;
+
+    private CropIndicatorOverlay() {}
+
+    public static void onClientTick() {
+        while (TOGGLE_KEY.consumeClick()) {
+            visible = !visible;
+            Minecraft mc = Minecraft.getInstance();
+            if (mc.player != null) {
+                mc.player.displayClientMessage(
+                        Component.translatable(visible
+                                ? "indicator.theturningoftheseasons.shown"
+                                : "indicator.theturningoftheseasons.hidden"),
+                        true);
+            }
+        }
+    }
+
+    @Override
+    public void render(GuiGraphics graphics, DeltaTracker deltaTracker) {
         if (!visible) return;
         if (!ClientConfig.SHOW_CROP_INDICATOR.get()) return;
 
         Minecraft mc = Minecraft.getInstance();
-        if (mc.level == null || mc.player == null) return;
         if (mc.options.hideGui) return;
-
+        if (mc.level == null || mc.player == null) return;
         if (mc.hitResult == null || mc.hitResult.getType() != HitResult.Type.BLOCK) return;
+
         BlockHitResult hit = (BlockHitResult) mc.hitResult;
         BlockPos pos = hit.getBlockPos();
         BlockState state = mc.level.getBlockState(pos);
@@ -79,71 +94,42 @@ public final class CropIndicatorOverlay {
         boolean inSeason = seasonState != null
                 && CropSeasonResolver.isInSeason(block, seasonState.season(), zone);
 
-        // 文字内容
         String cropName = block.getName().getString();
         int percent = maxAge > 0 ? age * 100 / maxAge : 0;
-        String line1 = cropName + " \u00b7 " + percent + "%";
 
         String seasonName = seasonState != null
                 ? Component.translatable(seasonState.season().getTranslationKey()).getString()
                 : "?";
         String zoneName = Component.translatable(zone.getTranslationKey()).getString();
         String status = inSeason ? "\u2713" : "\u2717";
-        String line2 = seasonName + " \u00b7 " + zoneName + " \u00b7 " + status;
-
-        renderBillboard(event, pos, mc, line1, line2, inSeason);
-    }
-
-    private static void renderBillboard(RenderLevelStageEvent event, BlockPos pos,
-            Minecraft mc, String line1, String line2, boolean inSeason) {
-
-        PoseStack poseStack = event.getPoseStack();
-        Camera camera = event.getCamera();
-        Vec3 camPos = camera.getPosition();
-        Vec3 targetPos = Vec3.atCenterOf(pos).add(0, 1.0, 0);
 
         Font font = mc.font;
+        Component line1 = Component.literal(cropName + " \u00b7 " + percent + "%");
+        Component line2 = Component.literal(seasonName + " \u00b7 " + zoneName);
+        String line2Suffix = " \u00b7 " + status;
 
-        // 使用 ByteBufferBuilder (1.21.1 标准 API)
-        ByteBufferBuilder byteBuf = new ByteBufferBuilder(1536);
-        MultiBufferSource.BufferSource bufferSource = MultiBufferSource.immediate(byteBuf);
+        int line2Width = font.width(line2) + font.width(line2Suffix);
+        int boxW = Math.max(font.width(line1), line2Width) + PADDING * 2;
+        int boxH = LINE_HEIGHT * 2 + PADDING * 2 + 2;
 
-        poseStack.pushPose();
-        poseStack.translate(targetPos.x - camPos.x, targetPos.y - camPos.y, targetPos.z - camPos.z);
-        poseStack.mulPose(camera.rotation());
-        poseStack.scale(-0.025f, -0.025f, 0.025f);
+        // 屏幕顶部居中
+        int screenW = graphics.guiWidth();
+        int x = (screenW - boxW) / 2;
+        int y = 40;
 
-        Matrix4f matrix = poseStack.last().pose();
+        // 半透明背景
+        graphics.fill(x, y, x + boxW, y + boxH, BG_COLOR);
 
-        // 行1: 作物名 · 百分比
-        float w1 = font.width(line1) / 2f;
-        font.drawInBatch(line1, -w1, 0, 0xFFFFAA00, true, matrix, bufferSource,
-                Font.DisplayMode.SEE_THROUGH, 0, 15728880);
+        int textX = x + PADDING;
+        int textY = y + PADDING;
 
-        // 行2: 季节 · 气候带 · ✓/✗
-        int line2Color = inSeason ? 0xFF55FF55 : 0xFFFF5555;
-        float w2 = font.width(line2) / 2f;
-        font.drawInBatch(line2, -w2, 14, line2Color, true, matrix, bufferSource,
-                Font.DisplayMode.SEE_THROUGH, 0, 15728880);
+        // 第一行：作物名 · 85%
+        graphics.drawString(font, line1, textX, textY, 0xFFFFAA00, true);
 
-        poseStack.popPose();
-
-        // endBatch 内建 build + drawWithShader，无需额外调用
-        bufferSource.endBatch();
-    }
-
-    @SubscribeEvent
-    public static void onClientTick(ClientTickEvent.Post event) {
-        while (TOGGLE_KEY.consumeClick()) {
-            visible = !visible;
-            Minecraft mc = Minecraft.getInstance();
-            if (mc.player != null) {
-                mc.player.displayClientMessage(
-                        Component.translatable(visible
-                                ? "indicator.theturningoftheseasons.shown"
-                                : "indicator.theturningoftheseasons.hidden"),
-                        true);
-            }
-        }
+        // 第二行：季节 · 气候带 · ✓/✗
+        textY += LINE_HEIGHT;
+        graphics.drawString(font, line2, textX, textY, 0xFFFFFFFF, true);
+        graphics.drawString(font, line2Suffix, textX + font.width(line2), textY,
+                inSeason ? 0xFF55FF55 : 0xFFFF5555, true);
     }
 }

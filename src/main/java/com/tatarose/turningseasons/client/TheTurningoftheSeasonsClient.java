@@ -10,6 +10,7 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
@@ -20,9 +21,10 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
  *
  * <p>职责：</p>
  * <ol>
- *     <li>注册 mod config 屏幕入口（NeoForge 自动生成）；</li>
+ *     <li>注册 mod config 屏幕入口；</li>
  *     <li>注册 HUD 渲染层（季节 HUD + 作物指示器）；</li>
  *     <li>注册快捷键；</li>
+ *     <li>快捷键轮询；</li>
  *     <li>玩家断开连接时清空客户端缓存。</li>
  * </ol>
  */
@@ -34,7 +36,7 @@ public class TheTurningoftheSeasonsClient {
     }
 
     /**
-     * Mod 总线上的客户端事件 —— 注册 HUD 层和快捷键。
+     * Mod 总线事件：注册 HUD 层和快捷键。
      */
     @EventBusSubscriber(modid = TheTurningoftheSeasons.MODID, value = Dist.CLIENT)
     public static final class ModBusEvents {
@@ -43,6 +45,10 @@ public class TheTurningoftheSeasonsClient {
             event.registerAboveAll(
                     ResourceLocation.fromNamespaceAndPath(TheTurningoftheSeasons.MODID, "season_hud"),
                     SeasonHudOverlay.INSTANCE
+            );
+            event.registerAboveAll(
+                    ResourceLocation.fromNamespaceAndPath(TheTurningoftheSeasons.MODID, "crop_indicator"),
+                    CropIndicatorOverlay.INSTANCE
             );
         }
 
@@ -53,7 +59,7 @@ public class TheTurningoftheSeasonsClient {
     }
 
     /**
-     * 游戏总线上的客户端事件 —— 处理断线/登入和快捷键轮询。
+     * 游戏总线事件：断线清理 + 快捷键轮询。
      */
     @EventBusSubscriber(modid = TheTurningoftheSeasons.MODID, value = Dist.CLIENT)
     public static final class GameBusEvents {
@@ -66,6 +72,11 @@ public class TheTurningoftheSeasonsClient {
         @SubscribeEvent
         public static void onClientLoggingIn(ClientPlayerNetworkEvent.LoggingIn event) {
             ClientSeasonState.clear();
+        }
+
+        @SubscribeEvent
+        public static void onClientTick(ClientTickEvent.Post event) {
+            CropIndicatorOverlay.onClientTick();
         }
     }
 }
