@@ -127,9 +127,9 @@ public class SeasonSavedData extends SavedData {
 
     /**
      * 把当前数据快照成 SeasonState，供网络同步 / HUD 显示使用。
-     * daysPerSeason 由调用方传入（来自 ServerConfig 解析），避免数据类反向依赖配置。
+     * 参数由调用方从 ServerConfig 传入，避免数据类反向依赖配置。
      */
-    public SeasonState toState(int daysPerSeason) {
-        return new SeasonState(season, year, dayOfSeason, daysPerSeason);
+    public SeasonState toState(int daysPerSeason, double growthMultiplier) {
+        return new SeasonState(season, year, dayOfSeason, daysPerSeason, growthMultiplier);
     }
 }

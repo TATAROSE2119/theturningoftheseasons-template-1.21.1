@@ -115,17 +115,20 @@ public final class SeasonManager {
     public static void syncToPlayer(ServerPlayer player) {
         if (!(player.level() instanceof ServerLevel level)) return;
         if (!isDimensionEnabled(level)) {
-            // 维度未启用，不发送：客户端缓存保持 null，HUD 不显示
             return;
         }
         SeasonSavedData data = SeasonSavedData.get(level);
-        SeasonState state = data.toState(ServerConfig.resolveDaysPerSeason());
+        SeasonState state = data.toState(
+                ServerConfig.resolveDaysPerSeason(),
+                ServerConfig.GLOBAL_GROWTH_MULTIPLIER.get());
         PacketDistributor.sendToPlayer(player, new SeasonSyncPayload(state));
     }
 
     /** 把当前数据全量同步给该维度的所有在线玩家。 */
     public static void syncStateToLevel(ServerLevel level, SeasonSavedData data) {
-        SeasonState state = data.toState(ServerConfig.resolveDaysPerSeason());
+        SeasonState state = data.toState(
+                ServerConfig.resolveDaysPerSeason(),
+                ServerConfig.GLOBAL_GROWTH_MULTIPLIER.get());
         var payload = new SeasonSyncPayload(state);
         for (ServerPlayer player : level.players()) {
             PacketDistributor.sendToPlayer(player, payload);

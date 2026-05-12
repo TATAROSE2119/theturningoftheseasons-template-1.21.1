@@ -97,6 +97,10 @@ public final class CropIndicatorOverlay implements LayeredDraw.Layer {
         String cropName = block.getName().getString();
         int percent = maxAge > 0 ? age * 100 / maxAge : 0;
 
+        // 生长倍率：当季 = 配置值，非当季 = 0
+        double speed = inSeason && seasonState != null
+                ? seasonState.growthMultiplier() : 0.0;
+
         String seasonName = seasonState != null
                 ? Component.translatable(seasonState.season().getTranslationKey()).getString()
                 : "?";
@@ -104,7 +108,9 @@ public final class CropIndicatorOverlay implements LayeredDraw.Layer {
         String status = inSeason ? "\u2713" : "\u2717";
 
         Font font = mc.font;
-        Component line1 = Component.literal(cropName + " \u00b7 " + percent + "%");
+        String speedStr = speed == 1.0 ? "x1" : String.format("x%.1f", speed);
+        Component line1 = Component.literal(
+                cropName + " \u00b7 " + percent + "% \u00b7 " + speedStr);
         Component line2 = Component.literal(seasonName + " \u00b7 " + zoneName);
         String line2Suffix = " \u00b7 " + status;
 
@@ -123,7 +129,7 @@ public final class CropIndicatorOverlay implements LayeredDraw.Layer {
         int textX = x + PADDING;
         int textY = y + PADDING;
 
-        // 第一行：作物名 · 85%
+        // 第一行：作物名 · 85% · x1.5
         graphics.drawString(font, line1, textX, textY, 0xFFFFAA00, true);
 
         // 第二行：季节 · 气候带 · ✓/✗
