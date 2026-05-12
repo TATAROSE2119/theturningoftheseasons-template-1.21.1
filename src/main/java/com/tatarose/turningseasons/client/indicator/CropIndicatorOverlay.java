@@ -14,6 +14,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.BambooStalkBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CropBlock;
@@ -103,23 +105,36 @@ public final class CropIndicatorOverlay implements LayeredDraw.Layer {
         boolean inSeason = seasonState != null
                 && CropSeasonResolver.isInSeason(block, seasonState.season(), zone);
 
+        // 客户端温室检测
+        boolean isGreenhouse = checkGreenhouseClient(mc.level, pos);
+
         String cropName = block.getName().getString();
-        // 竹子不显示百分比
         String percentText = maxAge > 0
                 ? (" \u00b7 " + (age * 100 / maxAge) + "%") : "";
 
-        // 生长倍率：当季 = 配置值，非当季 = 0
-        double speed = inSeason && seasonState != null
-                ? seasonState.growthMultiplier() : 0.0;
+        // 生长速度显示
+        String speedStr;
+        if (isGreenhouse) {
+            double mult = seasonState != null ? seasonState.growthMultiplier() : 1.0;
+            speedStr = "\u2668 x" + (mult == 1.0 ? "1" : String.format("%.1f", mult));
+        } else if (!inSeason) {
+            speedStr = "\u2717";
+        } else {
+            double mult = seasonState != null ? seasonState.growthMultiplier() : 1.0;
+            if (mult <= 0.0) {
+                speedStr = "\u26D4"; // 倍率为0 = 完全停止
+            } else {
+                speedStr = "x" + (mult == 1.0 ? "1" : String.format("%.1f", mult));
+            }
+        }
 
         String seasonName = seasonState != null
                 ? Component.translatable(seasonState.season().getTranslationKey()).getString()
                 : "?";
         String zoneName = Component.translatable(zone.getTranslationKey()).getString();
-        String status = inSeason ? "\u2713" : "\u2717";
+        String status = isGreenhouse ? "\u2668" : (inSeason ? "\u2713" : "\u2717");
 
         Font font = mc.font;
-        String speedStr = speed == 1.0 ? "x1" : String.format("x%.1f", speed);
         Component line1 = Component.literal(cropName + percentText + " \u00b7 " + speedStr);
         Component line2 = Component.literal(seasonName + " \u00b7 " + zoneName);
         String line2Suffix = " \u00b7 " + status;
@@ -142,10 +157,30 @@ public final class CropIndicatorOverlay implements LayeredDraw.Layer {
         // 第一行：作物名 · 85% · x1.5
         graphics.drawString(font, line1, textX, textY, 0xFFFFAA00, true);
 
-        // 第二行：季节 · 气候带 · ✓/✗
+        // 第二行：季节 · 气候带 · 状态
         textY += LINE_HEIGHT;
+        int statusColor = isGreenhouse ? 0xFFAAAAFF : (inSeason ? 0xFF55FF55 : 0xFFFF5555);
         graphics.drawString(font, line2, textX, textY, 0xFFFFFFFF, true);
-        graphics.drawString(font, line2Suffix, textX + font.width(line2), textY,
-                inSeason ? 0xFF55FF55 : 0xFFFF5555, true);
+        graphics.drawString(font, line2Suffix, textX + font.width(line2), textY, statusColor, true);
+    }
+
+    /** 客户端温室检测（与服务端 GreenhouseDetector 保持一致）。 */
+    private static boolean checkGreenhouseClient(Level level, BlockPos pos) {
+        // 玻璃天花板
+        boolean glassCeiling = true;
+        for (int dy = 1; dy <= 16; dy++) {
+            BlockPos above = pos.above(dy);
+            if (!level.isInWorldBounds(above)) break;
+            if (level.getBlockState(above).canOcclude()) {
+                glassCeiling = false;
+                break;
+            }
+        }
+        // 人工光源（方块光 >= 9）
+        boolean artificialLight = level.getBrightness(LightLayer.BLOCK, pos) >= 9;
+        // 地下（Y < 48 且无天空视野）
+        boolean underground = pos.getY() < 48 && !level.canSeeSky(pos);
+
+        return glassCeiling || artificialLight || underground;
     }
 }
